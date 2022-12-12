@@ -196,7 +196,6 @@ class BookIterator:
         return self.book
 
 
-
 def hello(promt: str):
     return messages.get(6)
 
