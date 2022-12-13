@@ -191,9 +191,7 @@ class AddressBook(UserDict):
         try:
             with open(filename, "wb") as f:
                 dump = pickle.dumps(self.data)
-                f = open(filename, "wb")
                 f.write(dump)
-                f.close()
         except:
             print(messages.get(12))
 
