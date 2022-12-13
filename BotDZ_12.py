@@ -187,6 +187,25 @@ class AddressBook(UserDict):
         else:
             raise KeyError(messages.get(14))  
 
+    def save_book(self, filename: str = "data.ph"):
+        try:
+            with open(filename, "wb") as f:
+                dump = pickle.dumps(self.data)
+                f = open(filename, "wb")
+                f.write(dump)
+                f.close()
+        except:
+            print(messages.get(12))
+
+    def load_book(self, filename: str = "data.ph"):
+        try:
+            with open(filename, "rb") as f:
+                data = f.read()
+                self.data = pickle.loads(data)
+        except:
+            print(messages.get(13))
+        
+       
 
 class BookIterator:
     book: AddressBook
@@ -259,27 +278,6 @@ def search(promt: str):
     return book.search(promt)
 
 
-def save_book(book: AddressBook, filename: str = "data.ph"):
-    try:
-        dump = pickle.dumps(book)
-        f = open(filename, "wb")
-        f.write(dump)
-        f.close()
-    except:
-        print(messages.get(12))
-
-
-def load_book(filename: str = "data.ph")->AddressBook:
-    try:
-        f = open(filename, "rb")
-        data = f.read()
-        res = pickle.loads(data)
-        f.close()
-        return res
-    except:
-        print(messages.get(13))
-
-
 OPERATIONS = {
     'hello': hello,
     'add': add,
@@ -310,9 +308,10 @@ def parse(promt: str):
         raise ValueError(messages.get(0))
 
 
-book = load_book()
+book = AddressBook()
 
 def main():
+    book.load_book()
     os.system('CLS')
     print("- Hello! Let's get started!")
     while True:
@@ -320,7 +319,7 @@ def main():
         res = parse(command)
         print(res)
         if res == messages.get(5):
-            save_book(book)
+            book.save_book()
             break
         
 
